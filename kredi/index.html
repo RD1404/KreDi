@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KreDi - Hamoray ny fampidirana fahana</title>
+
+    <!-- Open Graph / Partage sur réseaux sociaux -->
+    <meta property="og:url" content="https://krediscan.netlify.app/">
+    <meta property="og:title" content="KreDi - Hamoray ny fampidirana fahana">
+    <meta property="og:description" content="Fini la saisie manuelle des codes ! Scannez vos cartes de recharge instantanément avec KreDi.">
+    <meta property="og:image" content="https://krediscan.netlify.app/sitehead.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KreDi">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KreDi - Hamoray ny fampidirana fahana">
+    <meta name="twitter:description" content="Fini la saisie manuelle des codes ! Scannez vos cartes de recharge instantanément avec KreDi.">
+    <meta name="twitter:image" content="https://krediscan.netlify.app/sitehead.jpg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #111827;
+            color: #333;
+            min-height: 960px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .poster-container {
+            width: 720px;
+            min-height: 960px;
+            background: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .header {
+            padding: 40px 30px 30px;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            transform: rotate(30deg);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-transform: none;
+        }
+        
+        .tagline {
+            font-size: 18px;
+            font-weight: 300;
+            opacity: 0.95;
+            margin-bottom: 25px;
+        }
+        
+        .sub-tagline {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+        
+        .header-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .download-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .arrow-group {
+            display: flex;
+            gap: 4px;
+        }
+
+        .arrow-group.left .arrow-chevron {
+            animation: arrowLeft 1.2s ease-in-out infinite;
+        }
+        .arrow-group.left .arrow-chevron:nth-child(1) { animation-delay: 0s; }
+        .arrow-group.left .arrow-chevron:nth-child(2) { animation-delay: 0.1s; }
+        .arrow-group.left .arrow-chevron:nth-child(3) { animation-delay: 0.2s; }
+
+        .arrow-group.right .arrow-chevron {
+            animation: arrowRight 1.2s ease-in-out infinite;
+        }
+        .arrow-group.right .arrow-chevron:nth-child(1) { animation-delay: 0s; }
+        .arrow-group.right .arrow-chevron:nth-child(2) { animation-delay: 0.1s; }
+        .arrow-group.right .arrow-chevron:nth-child(3) { animation-delay: 0.2s; }
+
+        .arrow-chevron {
+            font-size: 36px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes arrowLeft {
+            0% { opacity: 0.15; transform: translateX(-10px) scale(0.7); }
+            35% { opacity: 1; transform: translateX(8px) scale(1.3); }
+            70% { opacity: 0.6; transform: translateX(2px) scale(1.05); }
+            100% { opacity: 0.15; transform: translateX(-10px) scale(0.7); }
+        }
+
+        @keyframes arrowRight {
+            0% { opacity: 0.15; transform: translateX(10px) scale(0.7); }
+            35% { opacity: 1; transform: translateX(-8px) scale(1.3); }
+            70% { opacity: 0.6; transform: translateX(-2px) scale(1.05); }
+            100% { opacity: 0.15; transform: translateX(10px) scale(0.7); }
+        }
+        
+        .download-btn {
+            background: white;
+            color: #764ba2;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .download-btn .material-icons {
+            margin-left: 8px;
+            font-size: 20px;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            font-size: 30px;
+        }
+        
+        .feature-icon .material-icons {
+            color: white;
+            font-size: 30px;
+        }
+        
+        .feature h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .feature p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .themes-section {
+            margin-top: 20px;
+        }
+        
+        .themes-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+        
+        .themes-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+        
+        .themes-instruction {
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .themes-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px 5px 20px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .themes-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .theme {
+            min-width: 175px;
+            width: 175px;
+            aspect-ratio: 9 / 20;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            background: #e9ecef;
+        }
+        
+        .theme:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .theme img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        
+        .slider-dot {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+        
+        .slider-dot.active {
+            background: #FFD700;
+            width: 36px;
+        }
+        
+        .footer {
+            padding: 25px;
+            background: #f8f9fa;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .download-counter {
+            background: rgba(118, 75, 162, 0.1);
+            border-radius: 20px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .download-counter .material-icons {
+            font-size: 18px;
+            color: #764ba2;
+        }
+        
+        .download-count {
+            font-weight: 700;
+            font-size: 16px;
+            color: #764ba2;
+        }
+        
+        .operators-section {
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .operators-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .operators {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .operator {
+            padding: 8px 15px;
+            background: white;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+        }
+        
+        .operator::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #764ba2;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .operator.yas::before {
+            background: #f2ce16;
+        }
+        
+        .operator.orange::before {
+            background: #ff9500;
+        }
+        
+        .operator.airtel::before {
+            background: #ff3b30;
+        }
+        
+        .about-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 10px;
+        }
+        
+        .about-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .about-btn .material-icons {
+            margin-left: 5px;
+            font-size: 18px;
+        }
+        
+        .signature {
+            font-size: 14px;
+            font-weight: 600;
+            color: #764ba2;
+            margin-top: 15px;
+            font-style: normal;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .signature:hover {
+            color: #5a3a80;
+        }
+
+        .signature:active {
+            transform: scale(0.93);
+        }
+        
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .popup.active {
+            display: flex;
+        }
+        
+        .popup-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .popup-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .popup-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+        
+        .popup-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .popup-text p {
+            margin-bottom: 15px;
+        }
+        
+        .popup-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .popup-close:hover {
+            color: #333;
+        }
+        
+        .image-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .image-popup.active {
+            display: flex;
+        }
+        
+        .image-popup-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .image-popup-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .image-popup-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .image-popup-close:hover {
+            transform: rotate(90deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+        
+        .shape-1 {
+            width: 200px;
+            height: 200px;
+            background: #667eea;
+            top: -50px;
+            right: -50px;
+        }
+        
+        .shape-2 {
+            width: 150px;
+            height: 150px;
+            background: #764ba2;
+            bottom: 100px;
+            left: -30px;
+        }
+        
+        .shape-3 {
+            width: 100px;
+            height: 100px;
+            background: #667eea;
+            top: 40%;
+            right: -20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster-container">
+        <div class="header">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+            <div class="header-content">
+                <h1 class="logo" style="color: #FFD700;">KreDi</h1>
+                <p class="tagline" style="color: lab(93.78% -15.32 92.04);"> <strong>AZA MISAHIRANA INTSONY MAMPIDITRA FAHANA, SCANNEO FOTSINY <br> <br>FINI LA SAISIE MANUELLE DES RECHARGES, SCANNEZ SEULEMENT </strong> </p>
+                <p class="sub-tagline">Téléchargez KreDi maintenant et simplifiez vos rechargements mobiles!</p>
+                <div class="header-actions">
+                    <div class="download-wrapper">
+                        <div class="arrow-group left">
+                            <span class="arrow-chevron">&rsaquo;</span>
+                            <span class="arrow-chevron">&rsaquo;</span>
+                            <span class="arrow-chevron">&rsaquo;</span>
+                        </div>
+                        <a href="KreDi.apk" download class="download-btn" id="downloadBtn">
+                            TÉLÉCHARGER <i class="material-icons">download</i>
+                        </a>
+                        <div class="arrow-group right">
+                            <span class="arrow-chevron">&lsaquo;</span>
+                            <span class="arrow-chevron">&lsaquo;</span>
+                            <span class="arrow-chevron">&lsaquo;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        ⌚
+                    </div>
+                    <h3>GAIN DE TEMPS</h3>
+                    <p>Tsy mila manoratra code,<br> Scanneo fotsiny ny recharge</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        📲
+                    </div>
+                    <h3>BANKING RECHARGE</h3>
+                    <p>Haingana kokoa ny fampidirana fahana amin'ny alalan'ny Mobile money</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        📤
+                    </div>
+                    <h3>PARTAGE RAPIDE</h3>
+                    <p>Zarao amin'ireo akaiky anao ny code de recharge </p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        🎬
+                    </div>
+                    <h3>SCAN CONTINU</h3>
+                    <p>Scan vidéo, tsy mila maka sary tsirairay, mitahiry ireo fahana izay mbola tsy ho ampiasaina</p>
+                </div>
+            </div>
+            
+            <div class="themes-section">
+                <h2 class="themes-title">Captures d'écran</h2>
+                <p class="themes-instruction">Cliquez sur les images pour un aperçu</p>
+                
+                <div class="themes-slider">
+                    <div class="theme" data-src="capture1.webp">
+                        <img src="capture1.webp" alt="Capture 1">
+                    </div>
+                    
+                    <div class="theme" data-src="capture2.webp">
+                        <img src="capture2.webp" alt="Capture 2">
+                    </div>
+                    
+                    <div class="theme" data-src="capture3.webp">
+                        <img src="capture3.webp" alt="Capture 3">
+                    </div>
+                    
+                    <div class="theme" data-src="capture4.webp">
+                        <img src="capture4.webp" alt="Capture 4">
+                    </div>
+                </div>
+                
+                <div class="slider-nav">
+                    <div class="slider-dot active"></div>
+                    <div class="slider-dot"></div>
+                    <div class="slider-dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-content">
+                <div class="download-counter">
+                    <i class="material-icons">cloud_download</i>
+                    <span><span class="download-count" id="downloadCount">Chargement...</span> téléchargements</span>
+                </div>
+                <button class="about-btn" id="aboutBtn">
+                    À PROPOS <i class="material-icons">info</i>
+                </button>
+                <div class="operators-section">
+                    <p class="operators-label">Opérateur supporté:</p>
+                    <div class="operators">
+                        <span class="operator yas">YAS</span>
+                        <span class="operator orange">ORANGE</span>
+                        <span class="operator airtel">AIRTEL</span>
+                    </div>
+                </div>
+                <a href="https://t.me/Randy_mirado" target="_blank" class="signature">by Randy Mirado</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup À propos -->
+    <div class="popup" id="aboutPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">&times;</button>
+            <h2 class="popup-title">À propos de KreDi</h2>
+            <div class="popup-text">
+                <p>Ne tapez plus jamais vos codes de recharge : Scannez, Validez, Profitez !</p>
+                <p>Vous en avez assez de plisser les yeux pour lire des chiffres minuscules et de recommencer trois fois la saisie à cause d'une erreur ? Découvrez l'application qui transforme votre smartphone en un scanner ultra-intelligent pour vos recharges mobiles.</p>
+                
+                <h3>🚀 Pourquoi choisir cette application ?</h3>
+                <p><strong>Scan Ultra-Rapide en Série :</strong> Pourquoi s'arrêter à une seule carte ? Scannez plusieurs tickets à la suite en quelques secondes. L'intelligence artificielle s'occupe de lire les 14 ou 15 chiffres pour vous avec une précision chirurgicale.</p>
+                <p><strong>Recharge Mobile Money Intégrée :</strong> Plus besoin de jongler entre les menus USSD compliqués. Rechargez votre compte ou celui de vos proches directement via vos services Mobile Money habituels en un clic.</p>
+                <p><strong>Sauvegarde Intelligente :</strong> Pas envie d'utiliser votre code tout de suite ? Enregistrez vos scans dans votre historique sécurisé pour une utilisation ultérieure. Vos recharges sont toujours à portée de main.</p>
+                <p><strong>Zéro Erreur, Zéro Stress :</strong> Fini les codes erronés ou les comptes bloqués. Le scanner détecte instantanément le bon format de code pour vos opérateurs préférés.</p>
+                
+                <h3>📱 Une interface minimaliste pour une efficacité maximale</h3>
+                <p>Conçue pour être légère et rapide, même sur les téléphones les plus modestes, l'application offre une expérience fluide sans fioritures inutiles.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup pour l'aperçu des images -->
+    <div class="image-popup" id="imagePopup">
+        <div class="image-popup-content">
+            <button class="image-popup-close" id="imagePopupClose">&times;</button>
+            <img src="" alt="Aperçu" id="previewImage">
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_8sGNzOA1W8OXoCeRbjOfgRcUY4OnD94",
+            authDomain: "kredi-8eccb.firebaseapp.com",
+            databaseURL: "https://kredi-8eccb-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "kredi-8eccb",
+            storageBucket: "kredi-8eccb.firebasestorage.app",
+            messagingSenderId: "6863136397",
+            appId: "1:6863136397:web:59dd99b489e96f537a64c4"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        
+        // Download count element
+        const downloadCountElement = document.getElementById('downloadCount');
+        
+        // Load download count from Firebase
+        function loadDownloadCount() {
+            const downloadCountRef = ref(db, 'downloadCount');
+            onValue(downloadCountRef, (snapshot) => {
+                const count = snapshot.val();
+                if (count !== null) {
+                    downloadCountElement.textContent = parseInt(count).toLocaleString('fr-FR');
+                } else {
+                    downloadCountElement.textContent = "0";
+                }
+            });
+        }
+
+        // Increment download count in Firebase
+        function incrementDownloadCount() {
+            const downloadCountRef = ref(db, 'downloadCount');
+            runTransaction(downloadCountRef, (count) => {
+                return (count || 0) + 1;
+            });
+        }
+
+        // Load the counter when page loads
+        window.addEventListener('load', loadDownloadCount);
+        
+        // Download button click handler
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.addEventListener('click', () => {
+            incrementDownloadCount();
+        });
+    </script>
+
+    <script>
+        // Slider functionality
+        const slider = document.querySelector('.themes-slider');
+        const dots = document.querySelectorAll('.slider-dot');
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                // 3 dashes for 4 slides: dash 0->slide 0, dash 1->slide 1, dash 2->slide 3
+                const slideMap = [0, 1, 3];
+                const slideWidth = 195;
+                slider.scrollTo({
+                    left: slideWidth * slideMap[index],
+                    behavior: 'smooth'
+                });
+                
+                dots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+            });
+        });
+        
+        // Update active dot on scroll
+        slider.addEventListener('scroll', () => {
+            const slideWidth = 195;
+            const scrollPosition = slider.scrollLeft;
+            const slideIndex = Math.min(3, Math.max(0, Math.round(scrollPosition / slideWidth)));
+            const activeIndex = slideIndex <= 1 ? slideIndex : 2;
+            
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+        
+        // Popup functionality
+        const aboutBtn = document.getElementById('aboutBtn');
+        const aboutPopup = document.getElementById('aboutPopup');
+        const popupClose = document.getElementById('popupClose');
+        
+        aboutBtn.addEventListener('click', () => {
+            aboutPopup.classList.add('active');
+        });
+        
+        popupClose.addEventListener('click', () => {
+            aboutPopup.classList.remove('active');
+        });
+        
+        aboutPopup.addEventListener('click', (e) => {
+            if (e.target === aboutPopup) {
+                aboutPopup.classList.remove('active');
+            }
+        });
+        
+        // Image preview functionality
+        const themes = document.querySelectorAll('.theme');
+        const imagePopup = document.getElementById('imagePopup');
+        const previewImage = document.getElementById('previewImage');
+        const imagePopupClose = document.getElementById('imagePopupClose');
+        
+        themes.forEach(theme => {
+            theme.addEventListener('click', () => {
+                const src = theme.getAttribute('data-src');
+                previewImage.src = src;
+                imagePopup.classList.add('active');
+            });
+        });
+        
+        imagePopupClose.addEventListener('click', () => {
+            imagePopup.classList.remove('active');
+        });
+        
+        imagePopup.addEventListener('click', (e) => {
+            if (e.target === imagePopup) {
+                imagePopup.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
